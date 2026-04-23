@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QQ - badhope</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2312B7F5'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z'/%3E%3C/svg%3E" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        'primary-dark': '#60a5fa',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'border-glow': 'borderGlow 2s ease-in-out infinite alternate',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        borderGlow: {
+                            '0%': { boxShadow: '0 0 5px rgba(59, 130, 246, 0.5)' },
+                            '100%': { boxShadow: '0 0 20px rgba(59, 130, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.4)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .glass-panel {
+                @apply backdrop-blur-md border border-white/20 dark:border-gray-700/30;
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-2xl hover:-translate-y-1;
+            }
+            .text-gradient {
+                @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-dark;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 min-h-screen font-sans">
+    <nav class="fixed w-full top-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white border-2 border-white dark:border-gray-700 shadow-sm">
+                    <i class="fa fa-qq"></i>
+                </div>
+                <span class="font-bold text-lg">QQ</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fa fa-moon-o dark:hidden text-gray-700"></i>
+                    <i class="fa fa-sun-o hidden dark:block text-yellow-400"></i>
+                </button>
+                <a href="https://www.github.com/badhope/" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fa fa-github text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 pt-24 pb-16">
+        <div class="max-w-3xl mx-auto">
+            <div class="glass-panel bg-white/30 dark:bg-gray-800/30 rounded-2xl shadow-xl p-8 card-hover animate-fade-in">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-24 h-24 bg-blue-500 rounded-full flex items-center justify-center text-white text-4xl mb-6 animate-float">
+                        <i class="fa fa-qq"></i>
+                    </div>
+                    <h1 class="text-3xl font-bold mb-4">QQ 联系方式</h1>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8">我的 QQ 号码</p>
+                    <div class="glass-panel bg-white/50 dark:bg-gray-700/50 rounded-xl p-6 w-full max-w-md">
+                        <div class="flex items-center justify-center space-x-3">
+                            <i class="fa fa-qq text-blue-400 text-2xl"></i>
+                            <span class="text-2xl font-mono font-bold text-gray-800 dark:text-white">3383432254</span>
+                        </div>
+                        <div class="mt-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                请通过以下方式添加我为好友：
+                            </p>
+                            <ul class="mt-2 text-sm text-gray-600 dark:text-gray-400 space-y-2">
+                                <li>• 在 QQ 搜索框中输入上述号码</li>
+                                <li>• 点击 "添加好友" 按钮</li>
+                                <li>• 发送验证消息说明来意</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <a href="index.html" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-blue-600 text-white rounded-full transition-colors">
+                        <i class="fa fa-arrow-left"></i>
+                        返回主页
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md py-6 border-t border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-600 dark:text-gray-400 text-sm">
+                © 2026 badhope. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 暗色模式切换
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        // 检查 localStorage 中的主题设置
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+
+        // 切换主题
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        });
+    </script>
+</body>
+</html>
