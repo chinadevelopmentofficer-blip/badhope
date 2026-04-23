@@ -130,9 +130,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(22, 33, 62, 0.8) 50%, rgba(15, 52, 96, 0.8) 100%), url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=abstract%20tech%20background%20with%20blue%20and%20purple%20gradients%20futuristic%20digital%20pattern&image_size=landscape_16_9');
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
         }
         .bg-overlay {
             position: absolute;
@@ -320,6 +321,61 @@
                     </div>
                 </div>
 
+                <div class="glass-panel bg-white/30 dark:bg-gray-800/30 rounded-2xl shadow-xl p-6 mt-6 card-hover animate-fade-in" style="animation-delay: 0.1s;">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center">
+                        <i class="fa-solid fa-music text-primary dark:text-primary-dark mr-2"></i>
+                        音乐欣赏
+                    </h2>
+                    <div class="flex flex-col items-center">
+                        <div class="w-32 h-32 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center mb-4 relative overflow-hidden">
+                            <i class="fa-solid fa-music text-white text-3xl"></i>
+                            <div class="absolute inset-0 bg-black/20"></div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-center mb-1">雨爱</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-center mb-4 text-sm">杨丞琳 - 经典情歌</p>
+                        <div class="w-full max-w-md">
+                            <div class="flex items-center justify-between mb-2">
+                                <span id="current-time" class="text-sm text-gray-600 dark:text-gray-400">0:00</span>
+                                <span id="duration" class="text-sm text-gray-600 dark:text-gray-400">3:45</span>
+                            </div>
+                            <div id="progress-container" class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mb-4 cursor-pointer">
+                                <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <div class="flex items-center justify-center space-x-4">
+                                <button id="play-btn" class="w-10 h-10 rounded-full bg-primary hover:bg-blue-600 text-white flex items-center justify-center transition-colors">
+                                    <i class="fa-solid fa-play"></i>
+                                </button>
+                                <button id="pause-btn" class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 flex items-center justify-center transition-colors hidden">
+                                    <i class="fa-solid fa-pause"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="w-full max-w-md mt-6 p-3 bg-white/50 dark:bg-gray-700/50 rounded-xl">
+                            <h4 class="font-medium mb-2 text-center text-sm">歌词</h4>
+                            <div id="lyrics" class="text-center text-gray-700 dark:text-gray-300 space-y-1 h-24 overflow-y-auto text-sm">
+                                <p>窗外的天气 就像是 你多变的表情</p>
+                                <p>下雨了 雨陪我哭泣 看不清 我也不想看清</p>
+                                <p>离开你 我安静的抽离 不忍揭晓的剧情</p>
+                                <p>我的泪流在心里 学会放弃</p>
+                                <p>听雨的声音 一滴滴清晰</p>
+                                <p>你的呼吸 像雨滴 渗入我的爱里</p>
+                                <p>真希望 雨能下不停</p>
+                                <p>让想念继续 让爱变透明</p>
+                                <p>我爱上给我勇气的 Rainie Love</p>
+                                <p>窗外的雨滴 一滴滴累积</p>
+                                <p>屋内的湿气 像储存爱你的记忆</p>
+                                <p>真希望 雨能下不停</p>
+                                <p>雨爱的秘密 能一直延续</p>
+                                <p>我相信 我将会看到 彩虹的美丽</p>
+                            </div>
+                        </div>
+                    </div>
+                    <audio id="audio" loop>
+                        <source src="http://chinadh.dpdns.org/yuai.mp3" type="audio/mpeg">
+                        您的浏览器不支持音频元素。
+                    </audio>
+                </div>
+
                 <div class="glass-panel bg-white/30 dark:bg-gray-800/30 rounded-2xl shadow-xl p-6 mt-6 card-hover animate-fade-in" style="animation-delay: 0.2s;">
                     <h2 class="text-2xl font-bold mb-4 flex items-center">
                         <i class="fa-solid fa-folder-open text-primary dark:text-primary-dark mr-2"></i>
@@ -444,6 +500,58 @@
                     }
                 }
             }
+        });
+    </script>
+
+    <script>
+        // 音乐播放器功能
+        const audio = document.getElementById('audio');
+        const playBtn = document.getElementById('play-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
+
+        // 播放按钮点击事件
+        playBtn.addEventListener('click', () => {
+            audio.play();
+            playBtn.classList.add('hidden');
+            pauseBtn.classList.remove('hidden');
+        });
+
+        // 暂停按钮点击事件
+        pauseBtn.addEventListener('click', () => {
+            audio.pause();
+            pauseBtn.classList.add('hidden');
+            playBtn.classList.remove('hidden');
+        });
+
+        // 点击进度条快进
+        progressContainer.addEventListener('click', (e) => {
+            const width = progressContainer.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audio.duration;
+            const seekTime = (clickX / width) * duration;
+            audio.currentTime = seekTime;
+        });
+
+        // 更新进度条和时间
+        audio.addEventListener('timeupdate', () => {
+            const progress = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = `${progress}%`;
+            
+            // 更新当前时间
+            const currentMinutes = Math.floor(audio.currentTime / 60);
+            const currentSeconds = Math.floor(audio.currentTime % 60);
+            currentTimeEl.textContent = `${currentMinutes}:${currentSeconds.toString().padStart(2, '0')}`;
+        });
+
+        // 音频加载完成后更新总时长
+        audio.addEventListener('loadedmetadata', () => {
+            const durationMinutes = Math.floor(audio.duration / 60);
+            const durationSeconds = Math.floor(audio.duration % 60);
+            durationEl.textContent = `${durationMinutes}:${durationSeconds.toString().padStart(2, '0')}`;
         });
     </script>
 </body>
