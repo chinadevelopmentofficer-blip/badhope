@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>badhope - 个人主页</title>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/195405851?v=4" type="image/png">
+    <svg width="0" height="0" style="position:absolute;">
+        <filter id="roundAvatar">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="0" result="blur"/>
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"/>
+            <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+        </filter>
+    </svg>
+    <style>
+        link[rel="icon"] {
+            filter: url(#roundAvatar);
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { DEFAULT: '#6a11cb', dark: '#a855f7' },
+                        secondary: { DEFAULT: '#2575fc', dark: '#60a5fa' },
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'fade-in': 'fadeIn 0.8s ease-in',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        fadeIn: {
+                            from: { opacity: 0, transform: 'translateY(20px)' },
+                            to: { opacity: 1, transform: 'translateY(0)' },
+                        },
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-gradient {
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .bg-gradient-custom {
+                background: linear-gradient(135deg, #6a11cb, #2575fc);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+            .glass-panel {
+                background: rgba(255, 255, 255, 0.6);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+                position: relative;
+                overflow: hidden;
+            }
+            .glass-panel::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, #6a11cb, transparent);
+                animation: border-glow 4s ease-in-out infinite;
+            }
+            .glass-panel::before {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, #2575fc, transparent);
+                animation: border-glow 4s ease-in-out infinite reverse;
+            }
+            .dark .glass-panel::after {
+                background: linear-gradient(90deg, transparent, #a855f7, transparent);
+            }
+            .dark .glass-panel::before {
+                background: linear-gradient(90deg, transparent, #60a5fa, transparent);
+            }
+            .dark .glass-panel {
+                background: rgba(17, 24, 39, 0.6);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            }
+            @keyframes border-glow {
+                0%, 100% { opacity: 0.3; }
+                50% { opacity: 1; }
+            }
+        }
+    </style>
+    <style>
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background-color: #121212;
+        }
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background-size: cover;
+            background-position: center;
+        }
+        .bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f3f4f6;
+            opacity: 0.85;
+        }
+        .dark .bg-overlay {
+            background-color: #121212;
+            opacity: 0.7;
+        }
+        .avatar-glow {
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 5px rgba(106, 17, 203, 0.3); }
+            to { box-shadow: 0 0 20px rgba(106, 17, 203, 0.8); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tech-icon {
+            filter: drop-shadow(0 0 5px rgba(106, 17, 203, 0.5));
+        }
+        .repo-item {
+            transition: all 0.3s ease;
+        }
+        .repo-item:hover {
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+<body class="text-gray-800 dark:text-gray-200 min-h-screen">
+    <div class="bg-container">
+        <div class="bg-image"></div>
+        <div class="bg-overlay"></div>
+    </div>
+    
+    <nav class="fixed w-full top-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="https://avatars.githubusercontent.com/u/195405851?v=4" alt="badhope" class="w-8 h-8 rounded-full border-2 border-white dark:border-gray-700 shadow-sm">
+                <span class="font-bold text-lg">badhope</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fa-solid fa-moon dark:hidden text-gray-700"></i>
+                    <i class="fa-solid fa-sun hidden dark:block text-yellow-400"></i>
+                </button>
+                <a href="https://www.github.com/badhope/" target="_blank" rel="noopener noreferrer" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fa-brands fa-github text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 pt-24 pb-16">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-1 animate-fade-in">
+                
+                <div class="glass-panel bg-white/30 dark:bg-gray-800/30 rounded-2xl shadow-xl p-6 card-hover">
+                    <div class="flex justify-center mb-6">
+                        <img src="https://avatars.githubusercontent.com/u/195405851?v=4" alt="badhope" class="w-36 h-36 rounded-full border-4 border-white dark:border-gray-700 shadow-lg avatar-glow">
+                    </div>
+                    <div class="text-center mb-6">
+                        <h1 class="text-2xl font-bold mb-2">badhope</h1>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">Python Developer</p>
+                        <a href="https://www.github.com/badhope/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center px-4 py-2 rounded-full bg-gradient-custom text-white font-medium hover:opacity-90 transition-opacity">
+                            <i class="fa-brands fa-github mr-2"></i>
+                            访问我的 GitHub
+                        </a>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 text-center">
+                            <div class="text-2xl font-bold text-primary dark:text-primary-dark mb-1">34</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">总仓库数</div>
+                        </div>
+                        <div class="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 text-center">
+                            <div class="text-2xl font-bold text-secondary dark:text-secondary-dark mb-1">150</div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400">总 Stars</div>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <h3 class="text-lg font-semibold mb-3">技术栈</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 rounded-full text-sm flex items-center text-white" style="background-color: #0e2e64;">
+                                <i class="fa-solid fa-code mr-1 tech-icon"></i>
+                                HTML/CSS
+                            </span>
+                            <span class="px-3 py-1 rounded-full text-sm flex items-center text-white" style="background-color: #2575fc;">
+                                <i class="fa-solid fa-code mr-1 tech-icon"></i>
+                                JavaScript
+                            </span>
+                            <span class="px-3 py-1 rounded-full text-sm flex items-center text-white" style="background-color: #1f63d6;">
+                                <i class="fa-solid fa-code mr-1 tech-icon"></i>
+                                TypeScript
+                            </span>
+                            <span class="px-3 py-1 rounded-full text-sm flex items-center text-white" style="background-color: #6a11cb;">
+                                <i class="fa-brands fa-python mr-1 tech-icon"></i>
+                                Python
+                            </span>
+                            <span class="px-3 py-1 rounded-full text-sm flex items-center text-white" style="background-color: #3776ab;">
+                                <i class="fa-solid fa-code mr-1 tech-icon"></i>
+                                Django
+                            </span>
+                            <span class="px-3 py-1 rounded-full text-sm flex items-center text-white" style="background-color: #68a063;">
+                                <i class="fa-solid fa-leaf mr-1 tech-icon"></i>
+                                Node.js
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-panel bg-white/30 dark:bg-gray-800/30 rounded-2xl shadow-xl p-6 mt-6 card-hover animate-fade-in" style="animation-delay: 0.2s;">
+                    <h3 class="text-lg font-semibold mb-3">GitHub 活动概览</h3>
+                    <div class="h-64">
+                        <canvas id="activityChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="glass-panel bg-white/30 dark:bg-gray-800/30 rounded-2xl shadow-xl p-6 mt-6 card-hover">
+                    <h3 class="text-lg font-semibold mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left text-primary dark:text-primary-dark"></i>
+                        最新动态
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex gap-3 items-start">
+                            <div class="w-2 h-2 mt-2 bg-purple-600 rounded-full flex-shrink-0"></div>
+                            <div>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">更新了 mobile-skills 项目到 v1.2.0 版本</p>
+                                <span class="text-xs text-gray-500">2026年4月23日</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <div class="w-2 h-2 mt-2 bg-blue-600 rounded-full flex-shrink-0"></div>
+                            <div>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">添加了新的 Python 工具脚本到 badhope 仓库</p>
+                                <span class="text-xs text-gray-500">2026年4月22日</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <div class="w-2 h-2 mt-2 bg-green-600 rounded-full flex-shrink-0"></div>
+                            <div>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">修复了 Aboard 项目中的 TypeScript 类型错误</p>
+                                <span class="text-xs text-gray-500">2026年4月21日</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <div class="w-2 h-2 mt-2 bg-yellow-500 rounded-full flex-shrink-0"></div>
+                            <div>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">为 mobile-skills 添加了新的 AI 技能集成</p>
+                                <span class="text-xs text-gray-500">2026年4月20日</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <div class="w-2 h-2 mt-2 bg-red-500 rounded-full flex-shrink-0"></div>
+                            <div>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">更新了 README 文档，添加了详细的使用说明</p>
+                                <span class="text-xs text-gray-500">2026年4月19日</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2">
+                
+                <div class="glass-panel bg-white/30 dark:bg-gray-800/30 rounded-2xl shadow-xl p-6 animate-fade-in">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center">
+                        <i class="fa-solid fa-user-astronaut text-primary dark:text-primary-dark mr-2"></i>
+                        关于我
+                    </h2>
+                    <div class="space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
+                        <p>你好！我是一名来自中国的全栈开发者，专注于现代Web技术和Python后端开发。</p>
+                        <p>热爱编程、阅读和音乐，喜欢探索新技术并分享知识。目前主要使用 Python 进行后端开发，同时也熟悉 Vue.js 和 React 等前端框架。</p>
+                        <p>如果你对我的项目感兴趣，欢迎通过 GitHub 联系我！</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel bg-white/30 dark:bg-gray-800/30 rounded-2xl shadow-xl p-6 mt-6 card-hover animate-fade-in" style="animation-delay: 0.2s;">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center">
+                        <i class="fa-solid fa-folder-open text-primary dark:text-primary-dark mr-2"></i>
+                        最近项目
+                    </h2>
+                    <div class="space-y-4">
+                        <a href="#" class="block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl repo-item hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-semibold text-primary dark:text-primary-dark">PromptHub</h3>
+                                <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+                                    <i class="fa-solid fa-star mr-1"></i>
+                                    128
+                                </span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">AI 提示词管理平台，支持多种模型和提示词模板</p>
+                            <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
+                                <span>React</span>
+                                <span>更新于 2026-04-23</span>
+                            </div>
+                        </a>
+                        <a href="#" class="block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl repo-item hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-semibold text-primary dark:text-primary-dark">HumanOS</h3>
+                                <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+                                    <i class="fa-solid fa-star mr-1"></i>
+                                    256
+                                </span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">人机交互操作系统，提供智能语音和视觉交互界面</p>
+                            <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
+                                <span>TypeScript</span>
+                                <span>更新于 2026-04-22</span>
+                            </div>
+                        </a>
+                        <a href="#" class="block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl repo-item hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-semibold text-primary dark:text-primary-dark">LingXu</h3>
+                                <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+                                    <i class="fa-solid fa-star mr-1"></i>
+                                    192
+                                </span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-2">智能语音助手，支持多语言识别和自然语言处理</p>
+                            <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
+                                <span>Python</span>
+                                <span>更新于 2026-04-21</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="glass-panel bg-white/30 dark:bg-gray-800/30 rounded-2xl shadow-xl p-6 mt-6 card-hover animate-fade-in" style="animation-delay: 0.4s;">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center">
+                        <i class="fa-solid fa-envelope text-primary dark:text-primary-dark mr-2"></i>
+                        联系我
+                    </h2>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <a href="https://github.com/badhope" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                            <i class="fa-brands fa-github text-3xl mb-2 text-gray-700 dark:text-gray-300"></i>
+                            <span class="text-sm text-gray-600 dark:text-gray-400">GitHub</span>
+                        </a>
+                        <a href="https://badhope.ccwu.cc/qq.html" class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                            <i class="fa-brands fa-qq text-3xl mb-2 text-blue-400"></i>
+                            <span class="text-sm text-gray-600 dark:text-gray-400">QQ</span>
+                        </a>
+                        <a href="https://badhope.ccwu.cc/email.html" class="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                            <i class="fa-solid fa-envelope text-3xl mb-2 text-red-500"></i>
+                            <span class="text-sm text-gray-600 dark:text-gray-400">Email</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center py-6 text-gray-500 dark:text-gray-400 text-sm">
+        <p>&copy; 2026 badhope. Made with <i class="fa-solid fa-heart text-red-500"></i></p>
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        }
+
+        const ctx = document.getElementById('activityChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Commits',
+                    data: [12, 19, 8, 15, 22, 30, 18],
+                    borderColor: '#6a11cb',
+                    backgroundColor: 'rgba(106, 17, 203, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(255,255,255,0.1)' },
+                        ticks: { color: '#9ca3af' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#9ca3af' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
